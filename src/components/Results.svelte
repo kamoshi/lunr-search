@@ -2,18 +2,20 @@
   export let articles: Article[];
 </script>
 
-<div class="lunr-results">
+<ul class="lunr-results">
   {#each articles as article}
-    <a class="lunr-results__article" href={article.url}>
-      <span class="lunr-results__title">
-        {article.title}
-      </span>
-      <span class="lunr-results__url">
-        {article.url}
-      </span>
-    </a>
+    <li class="lunr-results__article">
+      <a href={article.url}>
+        <span class="lunr-results__title">
+          {article.title}
+        </span>
+          <span class="lunr-results__url">
+          {article.url}
+        </span>
+      </a>
+    </li>
   {/each}
-</div>
+</ul>
 
 <style lang="scss">
   .lunr-results {
@@ -21,13 +23,7 @@
 
     &__article {
       display: grid;
-      grid-template-columns: 5em 1fr;
-    }
-    &__title {
-
-    }
-    &__url {
-
+      grid-template-columns: 1fr 1fr;
     }
   }
 </style>

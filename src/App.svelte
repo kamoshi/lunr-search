@@ -25,7 +25,7 @@
 
 <style lang="scss">
   .lunr {
-    width: 50em;
+    width: 60em;
     margin: 0 auto;
   }
 </style>
