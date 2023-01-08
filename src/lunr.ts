@@ -1,12 +1,22 @@
 import lunr from "lunr";
 
 
-export async function fetchData(): Promise<Article[]> {
-  const data = await fetch('/index.json');
+const ADDRESS = '/index.json';
+
+export async function prepareSearch(): Promise<[Record<string, Article>, lunr.Index]> {
+  const data = await fetchData(ADDRESS);
+  const index = createIndex(data);
+  const articles = data.reduce((acc, a) => { acc[a.url] = a; return acc }, {});
+  return [articles, index];
+}
+
+
+async function fetchData(address: string): Promise<Article[]> {
+  const data = await fetch(address);
   return await data.json();
 }
 
-export function createIndex(articles: Article[]): lunr.Index {
+function createIndex(articles: Article[]): lunr.Index {
   return lunr(function () {
     this.ref('url');
     this.field('title');

@@ -1,34 +1,28 @@
 <script lang="ts">
-  import {createIndex} from "./lunr";
+  import { onMount } from 'svelte';
+  import {prepareSearch} from "./lunr";
+  import type {Index} from "lunr";
+  import Results from "./components/Results.svelte";
+  import Search from "./components/Search.svelte";
 
-  let data = 'dwadw';
+  let articles: Record<string, Article>;
+  let index: Index;
+  onMount(async () => [articles, index] = await prepareSearch());
 
-  const test: Article[] = [
-    {
-      title: 'Test',
-      content: 'aa',
-      url: 'http://localhost:8080',
-    },
-    {
-      title: 'Test',
-      content: 'Content',
-      url: 'http://localhost:8081',
-    }
-  ]
-
-  function onSearch() {
-    const index = createIndex(test);
-    const result = index.search('Test');
-    console.log(result);
+  let result: Article[] = [];
+  function search(query: CustomEvent<string>) {
+    if (!query.detail) return;
+    result = index.search(query.detail).map(result => articles[result.ref]);
   }
 </script>
 
-<main>
-  <h1>Hello {data}!</h1>
-  <input type="text" bind:value={data}>
-  <button on:click={onSearch}>Search</button>
+<main class="lunr-app">
+  <Search on:query={search} />
+  {#if result}
+    <Results articles={result} />
+  {:else}
+    <div class="info">
+      Please type search query...
+    </div>
+  {/if}
 </main>
-
-<style>
-
-</style>
