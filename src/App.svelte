@@ -16,13 +16,16 @@
   }
 </script>
 
-<main class="lunr-app">
+<section class="lunr">
   <Search on:query={search} />
   {#if result}
     <Results articles={result} />
-  {:else}
-    <div class="info">
-      Please type search query...
-    </div>
   {/if}
-</main>
+</section>
+
+<style lang="scss">
+  .lunr {
+    width: 50em;
+    margin: 0 auto;
+  }
+</style>
